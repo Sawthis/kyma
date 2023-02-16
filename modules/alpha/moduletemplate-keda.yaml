@@ -82,6 +82,17 @@ spec:
           labels:
             - name: "type.scan.security.kyma-project.io"
               value: "third-party-image"
+        - access:
+            type: ociRegistry
+            imageReference: eu.gcr.io/kyma-project/external/alpine
+            ref: 3.17.1
+          name: alpine
+          version: 0.0.1-a0e8648
+          relation: external
+          type: ociImage
+          labels:
+            - name: "type.scan.security.kyma-project.io"
+              value: "third-party-image"
       sources:
         - access:
             commit: a0e86481d91cb126972e2cba82361c11d6e4d2db
