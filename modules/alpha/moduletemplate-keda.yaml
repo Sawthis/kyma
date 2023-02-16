@@ -73,8 +73,8 @@ spec:
               value: "config"
         - access:
             type: ociRegistry
-            imageReference: artifact.registry.hostname/path/to/the/registry/k8s-tools
-            ref: v20221213-1840f45a
+            imageReference: eu.gcr.io/kyma-project/tpi/k8s-tools
+            ref: v20230110-ce11007d
           name: k8s-tools
           version: 0.0.1-a0e8648
           relation: external
