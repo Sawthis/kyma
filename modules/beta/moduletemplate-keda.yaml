@@ -1,0 +1,113 @@
+apiVersion: operator.kyma-project.io/v1beta1
+kind: ModuleTemplate
+metadata:
+  name: moduletemplate-keda
+  namespace: kcp-system
+  labels:
+    "operator.kyma-project.io/managed-by": "lifecycle-manager"
+    "operator.kyma-project.io/controller-name": "manifest"
+    "operator.kyma-project.io/module-name": "keda"
+  annotations:
+    "operator.kyma-project.io/module-version": "0.0.1-6cd5086"
+    "operator.kyma-project.io/module-provider": "internal"
+    "operator.kyma-project.io/descriptor-schema-version": "v2"
+spec:
+  target: remote
+  channel: alpha
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: Keda
+    metadata:
+      name: keda-sample
+    spec:
+      logging:
+        operator:
+          level: "debug"
+      resources:
+        operator:
+          limits:
+            cpu: "800m"
+            memory: "200Mi"
+          requests:
+            cpu: "300m"
+            memory: "150Mi"
+        metricServer:
+          limits:
+            cpu: "800m"
+            memory: "500Mi"
+          requests:
+            cpu: "300m"
+            memory: "500Mi"
+  descriptor:
+    apiVersion: ocm.software/v3alpha1
+    kind: ComponentVersion
+    metadata:
+      name: kyma.project.io/module/keda
+      version: 0.0.1-a0e8648
+      labels:
+        - name: "scan.security.kyma-project.io"
+          value:
+            scan: "enabled"
+      provider:
+        name: internal
+    repositoryContexts:
+      - baseUrl: europe-docker.pkg.dev/kyma-project/prod/unsigned
+        componentNameMapping: urlPath
+        type: ociRegistry
+    spec:
+      resources:
+        - access:
+            digest: sha256:86f21c6cc5d82167b10a23bb5a82e852cd5b8d6292e0ea448261c90ff6893a1a
+            type: localOciBlob
+          name: keda
+          relation: local
+          type: helm-chart
+          version: 0.0.1-a0e8648
+        - access:
+            digest: sha256:f4a599c4310b0fe9133b67b72d9b15ee96b52a1872132528c83978239b5effef
+            type: localOciBlob
+          name: config
+          relation: local
+          type: yaml
+          version: 0.0.1-a0e8648
+        - access:
+            type: ociRegistry
+            imageReference: eu.gcr.io/kyma-project/tpi/k8s-tools:v20230110-ce11007d
+          name: k8s-tools
+          version: 0.0.1-a0e8648
+          relation: external
+          type: ociImage
+          labels:
+            - name: "type.scan.security.kyma-project.io"
+              value: "third-party-image"
+        - access:
+            type: ociRegistry
+            imageReference: eu.gcr.io/kyma-project/external/alpine:3.17.1
+          name: alpine
+          version: 0.0.1-a0e8648
+          relation: external
+          type: ociImage
+          labels:
+            - name: "type.scan.security.kyma-project.io"
+              value: "third-party-image"
+      sources:
+        - access:
+            commit: a0e86481d91cb126972e2cba82361c11d6e4d2db
+            repoUrl: github.com/kyma-project/keda-manager
+            type: github
+          name: keda-manager
+          type: git
+          version: 0.0.1-a0e8648
+          labels:
+            - name: "git.kyma-project.io/ref"
+              value:
+                language: "refs/heads/main"
+            - name: "language.scan.security.kyma-project.io"
+              value:
+                language: "golang-mod"
+            - name: "subprojects.scan.security.kyma-project.io"
+              value:
+                subprojects: "true"
+            - name: "exclude.scan.security.kyma-project.io"
+              value:
+                exclude: "**/examples/**,**/other-examples/**"
