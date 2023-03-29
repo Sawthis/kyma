@@ -94,9 +94,9 @@ spec:
         - access:
             commit: a0e86481d91cb126972e2cba82361c11d6e4d2db
             repoUrl: github.com/kyma-project/keda-manager
-            type: github
+            type: gitHub
           name: keda-manager
-          type: git
+          type: Github
           version: 0.0.1-a0e8648
           labels:
             - name: "git.kyma-project.io/ref"
