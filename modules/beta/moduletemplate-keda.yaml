@@ -1,4 +1,4 @@
-apiVersion: operator.kyma-project.io/v1alpha1
+apiVersion: operator.kyma-project.io/v1beta1
 kind: ModuleTemplate
 metadata:
   name: moduletemplate-keda
@@ -39,18 +39,22 @@ spec:
             cpu: "300m"
             memory: "500Mi"
   descriptor:
-    component:
-      componentReferences: []
+    apiVersion: ocm.software/v3alpha1
+    kind: ComponentVersion
+    metadata:
+      name: kyma.project.io/module/keda
+      version: 0.0.1-a0e8648
       labels:
         - name: "scan.security.kyma-project.io"
-          value: 
+          value:
             scan: "enabled"
-      name: kyma.project.io/module/keda
-      provider: internal
-      repositoryContexts:
-        - baseUrl: europe-docker.pkg.dev/kyma-project/prod/unsigned
-          componentNameMapping: urlPath
-          type: ociRegistry
+      provider:
+        name: internal
+    repositoryContexts:
+      - baseUrl: europe-docker.pkg.dev/kyma-project/prod/unsigned
+        componentNameMapping: urlPath
+        type: ociRegistry
+    spec:
       resources:
         - access:
             digest: sha256:86f21c6cc5d82167b10a23bb5a82e852cd5b8d6292e0ea448261c90ff6893a1a
@@ -89,22 +93,21 @@ spec:
       sources:
         - access:
             commit: a0e86481d91cb126972e2cba82361c11d6e4d2db
-            ref: refs/heads/main
             repoUrl: github.com/kyma-project/keda-manager
             type: github
           name: keda-manager
           type: git
           version: 0.0.1-a0e8648
           labels:
+            - name: "git.kyma-project.io/ref"
+              value:
+                language: "refs/heads/main"
             - name: "language.scan.security.kyma-project.io"
-              value: 
+              value:
                 language: "golang-mod"
             - name: "subprojects.scan.security.kyma-project.io"
-              value: 
+              value:
                 subprojects: "true"
             - name: "exclude.scan.security.kyma-project.io"
-              value: 
+              value:
                 exclude: "**/examples/**,**/other-examples/**"
-      version: 0.0.1-a0e8648
-    meta:
-      schemaVersion: v2
